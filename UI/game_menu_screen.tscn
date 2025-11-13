@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=3 uid="uid://8v5jcuuwxcm6"]
+
+[ext_resource type="Theme" uid="uid://bltl405iq4304" path="res://scenes/UI/game_ui_theme.tres" id="1_iv8ii"]
+[ext_resource type="Script" uid="uid://dx3vltrvmb8m1" path="res://scenes/UI/game_menu_screen.gd" id="1_nccrm"]
+[ext_resource type="PackedScene" uid="uid://gjed8ofggqw4" path="res://scenes/UI/game_menu_screen_background.tscn" id="1_ttouv"]
+[ext_resource type="AudioStream" uid="uid://ee6q8euypwtn" path="res://Avanti - Mindwave (freetouse.com).mp3" id="4_67wv4"]
+
+[node name="GameMenuScreen" type="CanvasLayer"]
+script = ExtResource("1_nccrm")
+
+[node name="GameMenuScreenBackground" parent="." instance=ExtResource("1_ttouv")]
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_iv8ii")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="Label" type="Label" parent="MarginContainer/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.732478, 0.120795, 0.294973, 1)
+theme_override_colors/font_shadow_color = Color(0.310762, 0.0655704, 0.252736, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 77
+text = "Hay Day"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="StartGameButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 29)
+layout_mode = 2
+theme_type_variation = &"GameMenuButton"
+text = "Start"
+
+[node name="ExitGameButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 29)
+layout_mode = 2
+theme_type_variation = &"GameMenuButton"
+text = "Exit"
+
+[node name="Lofi" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_67wv4")
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ExitGameButton" to="." method="_on_exit_game_button_pressed"]
