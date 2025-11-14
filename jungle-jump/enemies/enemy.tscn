@@ -1,0 +1,89 @@
+[gd_scene load_steps=9 format=3 uid="uid://buewja3b88y4k"]
+
+[ext_resource type="Script" uid="uid://uo7bhmroylrr" path="res://enemies/enemy.gd" id="1_7frlh"]
+[ext_resource type="Texture2D" uid="uid://c6lu0coda24km" path="res://assets/sprites/enemy-death.png" id="2_7frlh"]
+[ext_resource type="AudioStream" uid="uid://bg4pfe7f1nk3l" path="res://assets/audio/enemy_hit.ogg" id="3_orwns"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7frlh"]
+size = Vector2(27, 19)
+
+[sub_resource type="Animation" id="Animation_a6vjd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_07tka"]
+resource_name = "death"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 5]
+}
+
+[sub_resource type="Animation" id="Animation_orwns"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_07tka"]
+_data = {
+&"RESET": SubResource("Animation_a6vjd"),
+&"death": SubResource("Animation_07tka"),
+&"walk": SubResource("Animation_orwns")
+}
+
+[node name="Enemy" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_7frlh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_7frlh")
+hframes = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.5, 3.5)
+shape = SubResource("RectangleShape2D_7frlh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_07tka")
+}
+autoplay = "walk"
+
+[node name="EnemyHurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_orwns")
+volume_db = -1.316
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
